@@ -13,3 +13,6 @@ We always save our files with some meaningful names.
 An unauthorized person can traverse through a compressed zip file.
 •	There is a solution-
 encrypt the zip file using the AES256 algorithm.
+10/10/2024
+zip file encrypted using the AES256 algorithm with the password.
+SHA256 hashing function used for password.
