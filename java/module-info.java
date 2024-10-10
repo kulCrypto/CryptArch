@@ -5,6 +5,7 @@ module com.kldp.test {
     requires transitive javafx.controls;
 	requires javafx.base;
 	requires zip4j;
+	requires org.bouncycastle.provider;
 
     opens com.kldp.test to javafx.fxml;
     opens com.kldp.second.archive to javafx.fxml;

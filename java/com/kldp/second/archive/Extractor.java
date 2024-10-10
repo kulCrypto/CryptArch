@@ -1,5 +1,10 @@
 package com.kldp.second.archive;
 
+import java.io.File;
+
+import com.kldp.second.crypto.Crypto;
+import com.kldp.second.crypto.SHA256Hashing;
+
 import javafx.concurrent.Task;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.progress.ProgressMonitor;
@@ -21,6 +26,7 @@ public class Extractor extends Task<Boolean> {
 	@Override
 	protected Boolean call() throws Exception {
 		// TODO Auto-generated method stub
+		decryptZipFile();
 		ZipFile zipFile=new ZipFile(source);
 		zipFile.setPassword(passKey.toCharArray());
 		ProgressMonitor progressMonitor = zipFile.getProgressMonitor();
@@ -48,6 +54,11 @@ public class Extractor extends Task<Boolean> {
 		
 		zipFile.close();
 		return null;
+	}
+	private void decryptZipFile() throws Exception 
+	{
+		File file=new File(source);
+		new Crypto().decrypt(file,SHA256Hashing.hashPassword(passKey,7),file);
 	}
 
 }

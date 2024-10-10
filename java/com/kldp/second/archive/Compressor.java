@@ -2,7 +2,11 @@ package com.kldp.second.archive;
 
 import java.io.File;
 
+import com.kldp.second.crypto.Crypto;
+import com.kldp.second.crypto.SHA256Hashing;
+
 import javafx.concurrent.Task;
+//import javafx.scene.shape.Path;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.model.enums.AesKeyStrength;
@@ -32,7 +36,7 @@ public class Compressor extends Task<Boolean> {
 		// Below line is optional. AES 256 is used by default. You can override it to use AES 128. AES 192 is supported only for extracting.
 		zipParameters.setAesKeyStrength(AesKeyStrength.KEY_STRENGTH_256); 
 		File sourceDirectory=new File(source);
-		ZipFile zipFile = new ZipFile(dest+"/"+sourceDirectory.getName()+".zip", passKey.toCharArray());
+		ZipFile zipFile = new ZipFile(dest+"/Locker.zip", passKey.toCharArray());
 		ProgressMonitor progressMonitor = zipFile.getProgressMonitor();
 		zipFile.setRunInThread(true);
 		zipFile.addFolder(sourceDirectory, zipParameters);
@@ -56,8 +60,14 @@ public class Compressor extends Task<Boolean> {
 			  updateMessage("Task cancelled");
 			  updateValue(false);
 			}
+		//new Crypto().encrypt(zipFile,passKey.getBytes(),zipFile);
 		zipFile.close();
+		encryptZipFile();
 		return null;
+	}
+	private void encryptZipFile() throws Exception {
+		File file=new File(dest+"/Locker.zip");
+		new Crypto().encrypt(file,SHA256Hashing.hashPassword(passKey, 7),file);
 	}
 
 }
